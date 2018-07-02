@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title %} {% endblock %} | Blog</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bulma.min.css')}}">
+    {% block scripts %}{% endblock %}
+</head>
+<body>
+    <!-- Nav-bar -->
+    <nav class="navbar is-light">
+        <div class="container">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="{{ url_for('blog_all')}}">
+                    <!-- Logo del blog -->
+                    <img src="{{ url_for('static', filename='img/logo.png') }}" alt=""  height="28"> BLOG
+                </a>
+                <div class="navbar-burger burger" data-target="navbarExampleTransparentExample">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+            
+            <div id="navbarExampleTransparentExample" class="navbar-menu">
+                <div class="navbar-end">
+                    <a class="navbar-item" href="{{ url_for('blog_all')}}">
+                        Blog
+                    </a>
+                    {% if 'id' in session %}
+                        <a class="navbar-item" href="{{ url_for('admin_articulos')}}">
+                            Admin
+                        </a>
+                        <a class="navbar-item" href="{{ url_for('logout')}}">
+                            Logout
+                        </a>
+                    {% else %}
+                        <a class="navbar-item" href="{{ url_for('admin_login')}}">
+                            Login
+                        </a>
+                    {% endif %}
+                    <form action="{{url_for('buscar')}}" method="get" class="navbar-item">
+                            <input class="input is-primary" name="q" type="text" placeholder="Buscar...">
+                            <button class="button is-primary" type="submit"><i class="fas fa-search"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- End navbar -->	
+    <!-- Block title -->
+    <section class="hero is-primary">
+        <div class="hero-body">
+            <div class="container">
+            <h1 class="title has-text-centered">
+                {% block page_title %} {% endblock %}
+            </h1>
+            </div>
+        </div>
+    </section>
+    <!-- End block -->
+    <!-- Alerts -->
+    <div class="columns">
+        <div class="column"></div>
+        <div class="column">
+            {% with mensajes = get_flashed_messages(with_categories=true) %}
+                {% if mensajes %}
+                    {% for category, mensaje in mensajes %}
+                        <div class="notification is-{{ category }}" role="alert">
+                            {{ mensaje }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+        <div class="column"></div>
+    </div>
+    
+    <!-- EndAlerts -->
+    <!-- Block Main -->
+    <div class="container">
+        {% block main %} {% endblock %}
+    </div>
+    <!-- End block -->
+    <!-- Block Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="content has-text-centered">
+            <p>
+                2018 Viva yo.
+            </p>
+            </div>
+        </div>
+    </footer>
+    <!-- Endblock -->
+</body>
+</html>

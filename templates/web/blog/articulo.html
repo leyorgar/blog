@@ -1,0 +1,30 @@
+{% extends'layouts/master.html' %}
+{% block title %} {{ articulo.title }} {% endblock %}
+{% block page_title %} {{ articulo.title }} {% endblock %}
+{% block main %}
+<article>
+    {% if articulo.portada %}
+        <figure class="image is-4by3">
+            <img src="{{url_for('static', filename="uploads/"+ articulo.portada) }}" alt="">
+        </figure>
+    {% endif %}
+    <p>
+        Autor: <strong>{{ autor }}</strong>
+    </p>
+
+    <p>
+        {{ articulo.text|safe }}
+    </p>
+
+    <p>
+        Categorias <strong>{{ categoria }}</strong>
+    </p>
+    <p>
+        <div class="tags">
+            {% for tag in articulo.tags %}
+            <span class="tag is-info">{{  tag.name  }}</span>
+            {% endfor %}
+        </div>
+    </p>
+</article>
+{% endblock %}

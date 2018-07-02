@@ -1,0 +1,89 @@
+{% extends'layouts/admin.html' %}
+{% block title %} Articulos {% endblock %}
+{% block page_title %} Articulos {% endblock %}
+{% block main %}
+<div id="app">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>titulo</th>
+                <th>categoria</th>
+                <th>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for articulo in articulos %}
+                <tr>
+                    <td>
+                        {{ articulo.id }}
+                    </td>
+                    <td>
+                        {{ articulo.title }}
+                    </td>
+                    <td>
+                        {{ articulo.categoria.name }}
+                    </td>
+                    <td>
+                        <div class="columns">
+                            <div class="column">
+                                <a href="{{ url_for('editar_articulo', id=articulo.id)}}" class="button is-primary">
+                                    <span class="icon is-small">
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </span>
+                                </a>
+                            </div>
+                            <div class="column">
+                                <a @click="mostrarOcultarModal({{ articulo.id }})" class="button is-danger">
+                                    <span class="icon is-small">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="modal" v-bind:class="{'is-active': verBorrar}">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                <p class="modal-card-title">Seguro que quieres borrarlo</p>
+                <button class="delete" aria-label="close"></button>
+                </header>
+                <footer class="modal-card-foot">
+                    <form action="{{ url_for('borrar_articulo')}}" method="post">
+                        <input :value="articuloIdBorrar" type="hidden" name="articulo-borrar">
+                        <button class="button is-success">Si</button>
+                    </form>
+                    <button class="button is-danger" @click="mostrarOcultarModal(0)">No</button>
+                    
+                </footer>
+            </div>
+        </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var app = new Vue({
+            el: '#app',
+            delimiters: ['[[', ']]'],
+            data: {
+                verBorrar: false,
+                articuloIdBorrar: 0
+            },
+            methods: {
+                mostrarOcultarModal: function (idBorrar) {
+                    this.verBorrar = !this.verBorrar;
+                    this.articuloIdBorrar = idBorrar;
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

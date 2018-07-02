@@ -1,0 +1,29 @@
+{% extends'layouts/master.html' %}
+{% block title %} Busqueda {% endblock %}
+{% block page_title %} Busqueda {% endblock %}
+{% block main %}
+<!-- Texto explicativo de resultados -->
+<h2>{{ num_resultados }} resultados de {{ busqueda }}</h2>
+<!-- El loop para que aparezcan los ariculos -->
+{% for articulo in resultados %}
+<a href="{{ url_for('blog_articulo', id=articulo.id) }}">
+    <div class="card">
+        {% if articulo.portada %}
+        <div class="card-image">
+            <figure class="image is-4by3">
+                <img src="{{url_for('static', filename="uploads/"+ articulo.portada) }}" alt="">
+            </figure>
+        </div>
+        {% endif %}
+        <div class="card-content">
+            <p class="title">
+            {{ articulo.title }}
+            </p>
+            <p class="subtitle">
+            {{ articulo.text[0:100]|safe }}
+            </p>
+        </div>
+    </div>
+</a>
+{% endfor %}
+{% endblock %}
