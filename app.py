@@ -15,7 +15,7 @@ app = Flask(__name__)
 app.config['DEBUG'] = True
 
 # Database
-app.config['SQLALCHEMY_DATABASE_URI'] = getenv('SQLALCHEMY_DATABASE_URI')
+app.config['DATABASE_URL'] = getenv('SQLALCHEMY_DATABASE_URI')
 app.config['SECRET_KEY'] = getenv('SECRET_KEY')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['MAX_CONTENT_LENGTH'] = 1 * 1024 * 1024
